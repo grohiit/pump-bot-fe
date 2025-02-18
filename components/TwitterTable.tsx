@@ -24,8 +24,8 @@ export default function TwitterTable({
   const [displayLaunches, setDisplayLaunches] = useState<PumpLaunch[]>(
     pumpLaunches.filter((v, i) => i >= startIndex && i < endIndex)
   )
-  const [sortAsc, setSortAsc] = useState(true)
-  const [sortKey, setSortKey] = useState('URL')
+  const [sortAsc, setSortAsc] = useState(false)
+  const [sortKey, setSortKey] = useState('1hr')
 
   useEffect(() => {
     const startIndex = PER_PAGE * (currentPage - 1)
