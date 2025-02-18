@@ -4,10 +4,15 @@ import { useState, useEffect } from 'react'
 
 import { PumpLaunch } from '@/utils/types'
 import SingleLaunchRow from './SingleLaunchRow'
+import { FaSpinner } from 'react-icons/fa'
 
-type Props = { pumpLaunches: PumpLaunch[]; fetched: number }
+type Props = { pumpLaunches: PumpLaunch[]; fetched: number; loading: boolean }
 
-export default function TwitterTable({ pumpLaunches, fetched }: Props) {
+export default function TwitterTable({
+  pumpLaunches,
+  fetched,
+  loading,
+}: Props) {
   const PER_PAGE = 20
   const launchCount = pumpLaunches.length
   const totalPages = Math.ceil(launchCount / PER_PAGE)
@@ -44,7 +49,7 @@ export default function TwitterTable({ pumpLaunches, fetched }: Props) {
         })
         .filter((v, i) => i >= startIndex && i < endIndex)
     )
-  }, [currentPage, sortKey, sortAsc])
+  }, [currentPage, sortKey, sortAsc, pumpLaunches])
 
   function timeStampCompare(
     sortKey: string,
@@ -68,8 +73,11 @@ export default function TwitterTable({ pumpLaunches, fetched }: Props) {
     return
   }
 
+  if (loading)
+    return <FaSpinner className="animate-spin mx-auto text-center" size={80} />
+
   return (
-    <div>
+    <>
       <table className="w-full text-center table-fixed">
         <thead className="">
           <tr className="">
@@ -122,14 +130,13 @@ export default function TwitterTable({ pumpLaunches, fetched }: Props) {
           Results {startIndex + 1}-{Math.min(endIndex, launchCount)} of
           {` ${launchCount}`}
         </div>
-
         <Pagination
           maxPages={totalPages}
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
         />
       </div>
-    </div>
+    </>
   )
 }
 
