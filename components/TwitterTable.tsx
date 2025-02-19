@@ -24,7 +24,7 @@ export default function TwitterTable({
   const [displayLaunches, setDisplayLaunches] = useState<PumpLaunch[]>(
     pumpLaunches.filter((v, i) => i >= startIndex && i < endIndex)
   )
-  const [sortAsc, setSortAsc] = useState(false)
+  const [sortAsc, setSortAsc] = useState<boolean>(false)
   const [sortKey, setSortKey] = useState('1hr')
 
   useEffect(() => {
@@ -68,9 +68,8 @@ export default function TwitterTable({
   }
 
   function handleSort(newSortKey: string) {
-    if (sortKey !== newSortKey) setSortKey(newSortKey)
-    setSortAsc(!sortAsc)
-    return
+    if (sortKey == newSortKey) return setSortAsc(!sortAsc)
+    return setSortKey(newSortKey), setSortAsc(false)
   }
 
   if (loading)
