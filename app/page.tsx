@@ -5,9 +5,12 @@ import TwitterTable from '@/components/TwitterTable'
 import { PumpLaunch } from '@/utils/types'
 import RefreshButton from '@/components/RefreshButton'
 import { delay } from '@/utils/helperFns'
+import Filter from '@/components/Filter'
 
 export default function Home() {
   const [pumpLaunches, setPumpLaunches] = useState<PumpLaunch[]>([])
+  const [filteredLaunches, setFilteredLaunches] = useState<PumpLaunch[]>([])
+
   const [fetched, setFetched] = useState(0)
 
   const [loading, setLoading] = useState(true)
@@ -26,12 +29,21 @@ export default function Home() {
 
       const result = await response.json()
       setPumpLaunches(result.pumpLaunches)
+      setFilteredLaunches(result.pumpLaunches)
       setFetched(result.fetched)
-      setLoading(false)
     } catch (error) {
       console.error('Failed to fetch data:', error)
+    } finally {
       setLoading(false)
     }
+  }
+
+  async function filterLaunches(searchTerm: string) {
+    setFilteredLaunches(
+      pumpLaunches.filter((launch) =>
+        launch.url.toLowerCase().includes(searchTerm.trim().toLowerCase())
+      )
+    )
   }
 
   useEffect(() => {
@@ -58,10 +70,10 @@ export default function Home() {
               second: '2-digit',
             })}
       </small>
-
+      <Filter filterLaunches={filterLaunches} pumpLaunches={pumpLaunches} />
       <div className="bg-gray-100 p-4 rounded  mx-auto">
         <TwitterTable
-          pumpLaunches={pumpLaunches}
+          pumpLaunches={filteredLaunches}
           fetched={fetched}
           loading={loading}
         />

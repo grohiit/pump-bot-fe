@@ -206,6 +206,7 @@ function Pagination({
   const [pages, setPages] = useState<(string | number)[]>([1])
 
   useEffect(() => {
+    if (currentPage > maxPages) setCurrentPage(maxPages)
     if (maxPages <= 7) {
       let array = []
       for (let i = 1; i <= maxPages; i++) array.push(i)
