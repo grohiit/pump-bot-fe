@@ -36,7 +36,7 @@ export default function TwitterTable({
     setDisplayLaunches(
       pumpLaunches
         .sort((a, b) => {
-          if (sortKey === 'URL')
+          if (sortKey === 'URLs')
             return sortAsc
               ? a.url.localeCompare(b.url)
               : b.url.localeCompare(a.url)
@@ -82,7 +82,7 @@ export default function TwitterTable({
         <thead className="">
           <tr className="">
             <THeadCell
-              displayText="URL"
+              displayText="URLs"
               sortKey={sortKey}
               sortAsc={sortAsc}
               handleClick={handleSort}
